@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .card {
+    @apply bg-white rounded-xl shadow-lg;
+  }
+
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-gold-400 to-gold-600 text-white hover:shadow-lg;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+  }
+
+  .btn-danger {
+    @apply bg-red-500 text-white hover:bg-red-600;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-400 
+    focus:ring-2 focus:ring-gold-200 outline-none transition-all duration-200;
+  }
+
+  .loader {
+    @apply w-5 h-5 border-2 border-gold-200 border-t-gold-600 rounded-full animate-spin;
+  }
+}
+
+:root {
+  --gold-primary: #ffd700;
+  --gold-dark: #bfa100;
+}
+
+@layer base {
+  body {
+    @apply bg-dark-50 text-dark-900;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  select, input {
+    @apply text-dark-900 placeholder:text-dark-400 bg-white;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-gold-300 to-gold-400 text-dark-900 
+           hover:from-gold-400 hover:to-gold-500 shadow-sm hover:shadow;
+  }
+
+  .btn-danger {
+    @apply bg-red-500 text-white hover:bg-red-600;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-lg border border-dark-200/10 
+           backdrop-blur-sm transition-all duration-300;
+  }
+
+  .input-field {
+    @apply w-full px-3 py-2 rounded-lg border border-dark-200 
+           focus:border-gold-400 focus:ring-2 focus:ring-gold-300/50 
+           outline-none transition-all duration-200;
+  }
+
+  .shimmer {
+    @apply relative overflow-hidden before:absolute before:inset-0 
+           before:bg-gradient-to-r before:from-transparent 
+           before:via-white/20 before:to-transparent 
+           before:animate-shimmer;
+  }
+}
+
+.loader {
+  @apply w-6 h-6 border-2 border-dark-200 border-t-gold-400 
+         rounded-full animate-spin mx-auto;
+}
+
+/* Custom scroll styling */
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-100/50 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gold-300/50 rounded-full hover:bg-gold-400/50 
+         transition-colors duration-200;
+}
