@@ -50,7 +50,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
   const [toast, setToast] = useState<string | null>(null);
   const [section, setSection] = useState<Section>('dashboard');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [showTitles, setShowTitles] = useState(false);
+  const [showTitles] = useState(false);
 
   const fetchAssets = async () => {
     setLoading(true);
