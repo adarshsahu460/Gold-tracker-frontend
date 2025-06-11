@@ -124,18 +124,12 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-50 to-dark-100">
-      {/* Modern Navbar */}
+    <div className="min-h-screen bg-gradient-to-br from-dark-50 to-dark-100">      {/* Modern Navbar */}
       <nav className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 
-                         text-transparent bg-clip-text">
-              Gold Tracker
-            </h1>
-            
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center space-x-2">
+            <div className="hidden md:flex items-center space-x-4">
               {NAV_ITEMS.map(item => (
                 <button
                   key={item.id}
@@ -149,20 +143,24 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
                   {item.label}
                 </button>
               ))}
-              <button className="btn btn-danger ml-2" onClick={onLogout}>
+            </div>
+
+            {/* Logout Button */}
+            <div className="hidden md:flex">
+              <button className="btn btn-danger" onClick={onLogout}>
                 Logout
               </button>
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center justify-between w-full">
+              <div className="text-xl font-bold text-gold-600">Gold Tracker</div>
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-dark-600 
-                           hover:text-dark-900 hover:bg-dark-100 focus:outline-none"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gold-600
+                           hover:text-gold-700 hover:bg-gold-50 focus:outline-none"
+                aria-label="Menu"
               >
-                <span className="sr-only">Open main menu</span>
-                {/* Hamburger Icon */}
                 <svg
                   className={`${showMobileMenu ? 'hidden' : 'block'} h-6 w-6`}
                   xmlns="http://www.w3.org/2000/svg"
@@ -172,7 +170,6 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
-                {/* Close Icon */}
                 <svg
                   className={`${showMobileMenu ? 'block' : 'hidden'} h-6 w-6`}
                   xmlns="http://www.w3.org/2000/svg"
@@ -194,9 +191,10 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-dark-100/10"
+              transition={{ duration: 0.2 }}
+              className="md:hidden border-t border-dark-100/10 bg-white/90 backdrop-blur-md"
             >
-              <div className="px-2 pt-2 pb-3 space-y-1 bg-white/80 backdrop-blur-md">
+              <div className="px-4 pt-2 pb-3 space-y-1">
                 {NAV_ITEMS.map(item => (
                   <button
                     key={item.id}
@@ -204,21 +202,18 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
                       setSection(item.id);
                       setShowMobileMenu(false);
                     }}
-                    className={`w-full text-left px-3 py-2 rounded-md text-base font-medium 
-                      ${section === item.id
+                    className={`w-full text-left px-3 py-2 rounded-md text-sm font-medium ${
+                      section === item.id
                         ? 'bg-gradient-to-r from-gold-300 to-gold-400 text-dark-900'
                         : 'text-dark-600 hover:bg-dark-100/50'
-                      }`}
+                    }`}
                   >
                     {item.label}
                   </button>
                 ))}
                 <button
-                  onClick={() => {
-                    onLogout();
-                    setShowMobileMenu(false);
-                  }}
-                  className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
+                  onClick={onLogout}
+                  className="w-full text-left px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50"
                 >
                   Logout
                 </button>
