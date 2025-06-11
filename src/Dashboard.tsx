@@ -48,6 +48,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
   const [removeId, setRemoveId] = useState<number | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const [section, setSection] = useState<Section>('dashboard');
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const fetchAssets = async () => {
     setLoading(true);
@@ -133,6 +134,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
               Gold Tracker
             </h1>
             
+            {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-2">
               {NAV_ITEMS.map(item => (
                 <button
@@ -151,8 +153,79 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
                 Logout
               </button>
             </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setShowMobileMenu(!showMobileMenu)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-dark-600 
+                           hover:text-dark-900 hover:bg-dark-100 focus:outline-none"
+              >
+                <span className="sr-only">Open main menu</span>
+                {/* Hamburger Icon */}
+                <svg
+                  className={`${showMobileMenu ? 'hidden' : 'block'} h-6 w-6`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                {/* Close Icon */}
+                <svg
+                  className={`${showMobileMenu ? 'block' : 'hidden'} h-6 w-6`}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {showMobileMenu && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-t border-dark-100/10"
+            >
+              <div className="px-2 pt-2 pb-3 space-y-1 bg-white/80 backdrop-blur-md">
+                {NAV_ITEMS.map(item => (
+                  <button
+                    key={item.id}
+                    onClick={() => {
+                      setSection(item.id);
+                      setShowMobileMenu(false);
+                    }}
+                    className={`w-full text-left px-3 py-2 rounded-md text-base font-medium 
+                      ${section === item.id
+                        ? 'bg-gradient-to-r from-gold-300 to-gold-400 text-dark-900'
+                        : 'text-dark-600 hover:bg-dark-100/50'
+                      }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+                <button
+                  onClick={() => {
+                    onLogout();
+                    setShowMobileMenu(false);
+                  }}
+                  className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
+                >
+                  Logout
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Main Content */}
@@ -168,9 +241,9 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
             {section === 'dashboard' && (
               <div className="space-y-8">
                 {/* Add Asset Card */}
-                <section className="card p-6">
+                <section className="card p-4 sm:p-6">
                   <h2 className="text-xl font-semibold text-dark-900 mb-6">Add Gold Asset</h2>
-                  <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div className="md:col-span-2">
                       <select
                         name="type"
@@ -233,28 +306,29 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
                   )}
                 </section>
 
-                {/* Assets Table */}
-                <section className="card">
-                  <div className="p-6 border-b border-dark-100 flex justify-between items-center">
+                {/* Assets Table - Mobile Optimized */}
+                <section className="card overflow-hidden">
+                  <div className="p-4 sm:p-6 border-b border-dark-100 flex justify-between items-center">
                     <h2 className="text-xl font-semibold text-dark-900">Your Gold Assets</h2>
                     {loading && <div className="loader" />}
                   </div>
 
                   {assets.length === 0 ? (
-                    <div className="p-12 text-center text-dark-400">
+                    <div className="p-8 sm:p-12 text-center text-dark-400">
                       No gold assets added yet
                     </div>
                   ) : (
                     <div className="overflow-x-auto">
-                      <table className="w-full">
+                      {/* Desktop Table View */}
+                      <table className="w-full hidden sm:table">
                         <thead className="bg-dark-50">
                           <tr>
-                            <th className="px-6 py-4 text-left text-xs font-semibold text-dark-600 uppercase tracking-wider">Type</th>
-                            <th className="px-6 py-4 text-right text-xs font-semibold text-dark-600 uppercase tracking-wider">Weight (g)</th>
-                            <th className="px-6 py-4 text-right text-xs font-semibold text-dark-600 uppercase tracking-wider">Total Price (₹)</th>
-                            <th className="px-6 py-4 text-right text-xs font-semibold text-dark-600 uppercase tracking-wider">Price/g (₹)</th>
-                            <th className="px-6 py-4 text-left text-xs font-semibold text-dark-600 uppercase tracking-wider">Purchase Date</th>
-                            <th className="px-6 py-4"></th>
+                            <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-dark-600 uppercase tracking-wider">Type</th>
+                            <th className="px-4 sm:px-6 py-3 sm:py-4 text-right text-xs font-semibold text-dark-600 uppercase tracking-wider">Weight (g)</th>
+                            <th className="px-4 sm:px-6 py-3 sm:py-4 text-right text-xs font-semibold text-dark-600 uppercase tracking-wider">Total Price (₹)</th>
+                            <th className="px-4 sm:px-6 py-3 sm:py-4 text-right text-xs font-semibold text-dark-600 uppercase tracking-wider">Price/g (₹)</th>
+                            <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs font-semibold text-dark-600 uppercase tracking-wider">Purchase Date</th>
+                            <th className="px-4 sm:px-6 py-3 sm:py-4"></th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-dark-100">
@@ -266,23 +340,23 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
                               exit={{ opacity: 0 }}
                               className="hover:bg-dark-50/50 transition-colors"
                             >
-                              <td className="px-6 py-4 whitespace-nowrap text-dark-900">{asset.type}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-right text-dark-900">{asset.weight}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-right text-dark-900">
+                              <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-dark-900">{asset.type}</td>
+                              <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-right text-dark-900">{asset.weight}</td>
+                              <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-right text-dark-900">
                                 ₹{(asset.weight * asset.purchase_price).toLocaleString()}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-right text-dark-900">
+                              <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-right text-dark-900">
                                 ₹{asset.purchase_price.toLocaleString()}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-dark-900">
+                              <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-dark-900">
                                 {asset.purchase_date.split('T')[0]}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-right">
+                              <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap text-right">
                                 <motion.button
                                   whileHover={{ scale: 1.05 }}
                                   whileTap={{ scale: 0.95 }}
                                   onClick={() => handleRemove(asset.id)}
-                                  className="btn btn-danger"
+                                  className="btn btn-danger text-sm"
                                 >
                                   Remove
                                 </motion.button>
@@ -291,6 +365,47 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
                           ))}
                         </tbody>
                       </table>
+
+                      {/* Mobile Card View */}
+                      <div className="sm:hidden divide-y divide-dark-100">
+                        {assets.map(asset => (
+                          <motion.div
+                            key={asset.id}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="p-4 space-y-3"
+                          >
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h3 className="font-medium text-dark-900">{asset.type}</h3>
+                                <p className="text-sm text-dark-600">{asset.purchase_date.split('T')[0]}</p>
+                              </div>
+                              <motion.button
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => handleRemove(asset.id)}
+                                className="btn btn-danger text-sm py-1 px-3"
+                              >
+                                Remove
+                              </motion.button>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2 text-sm">
+                              <div>
+                                <p className="text-dark-600">Weight</p>
+                                <p className="font-medium">{asset.weight}g</p>
+                              </div>
+                              <div>
+                                <p className="text-dark-600">Price/g</p>
+                                <p className="font-medium">₹{asset.purchase_price.toLocaleString()}</p>
+                              </div>
+                              <div className="col-span-2">
+                                <p className="text-dark-600">Total Price</p>
+                                <p className="font-medium">₹{(asset.weight * asset.purchase_price).toLocaleString()}</p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </section>
@@ -298,28 +413,28 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
             )}
 
             {section === 'prices' && (
-              <section className="card p-8">
-                <h2 className="text-xl font-semibold text-dark-900 mb-8 text-center">
+              <section className="card p-4 sm:p-8">
+                <h2 className="text-xl font-semibold text-dark-900 mb-6 sm:mb-8 text-center">
                   Current Gold Prices
                 </h2>
                 {dashboard ? (
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {[
                       { label: '24K Gold', value: dashboard.price24K },
                       { label: '22K Gold', value: dashboard.price22K },
                       { label: '18K Gold', value: dashboard.price18K }
                     ].map(({ label, value }) => (
-                      <div key={label} className="card bg-gradient-to-br from-gold-50 to-white p-6 text-center">
+                      <div key={label} className="card bg-gradient-to-br from-gold-50 to-white p-4 sm:p-6 text-center">
                         <h3 className="text-lg text-dark-600 mb-2">{label}</h3>
-                        <p className="text-3xl font-bold text-gold-600">
+                        <p className="text-2xl sm:text-3xl font-bold text-gold-600">
                           ₹{value ? value.toLocaleString() : '-'}
-                          <span className="text-sm text-dark-400 ml-1">per gram</span>
+                          <span className="text-xs sm:text-sm text-dark-400 ml-1">per gram</span>
                         </p>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="flex justify-center py-12">
+                  <div className="flex justify-center py-8 sm:py-12">
                     <div className="loader" />
                   </div>
                 )}
@@ -327,23 +442,23 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
             )}
 
             {section === 'profit' && (
-              <section className="card p-8 text-center">
-                <h2 className="text-xl font-semibold text-dark-900 mb-8">Current Profit</h2>
+              <section className="card p-4 sm:p-8 text-center">
+                <h2 className="text-xl font-semibold text-dark-900 mb-6 sm:mb-8">Current Profit</h2>
                 {dashboard ? (
                   <motion.div
-                    className="inline-block card bg-gradient-to-br from-gold-50 to-white p-8"
+                    className="inline-block card bg-gradient-to-br from-gold-50 to-white p-6 sm:p-8"
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                   >
                     <h3 className="text-lg text-dark-600 mb-2">Net Profit</h3>
-                    <p className={`text-4xl font-bold ${
+                    <p className={`text-3xl sm:text-4xl font-bold ${
                       dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
                     }`}>
                       ₹{dashboard.net ? dashboard.net.toLocaleString() : '-'}
                     </p>
                   </motion.div>
                 ) : (
-                  <div className="flex justify-center py-12">
+                  <div className="flex justify-center py-8 sm:py-12">
                     <div className="loader" />
                   </div>
                 )}
