@@ -74,39 +74,39 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
       <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md mx-auto">
         {view === 'login' && (
           <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold text-gold-dark mb-2 text-center">Login</h2>
-            <input name="userid" placeholder="User ID" value={form.userid} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-dark" />
-            <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-dark" />
-            <button type="submit" className="bg-gold-dark text-white font-semibold py-2 rounded-lg hover:bg-gold transition">Login</button>
-            <p className="text-center">Don't have an account? <a href="#" className="text-gold-dark hover:underline" onClick={() => setView('register')}>Register</a></p>
+            <h2 className="text-2xl font-bold text-gold-700 mb-2 text-center">Login</h2>
+            <input name="userid" placeholder="User ID" value={form.userid} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-400" />
+            <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-400" />
+            <button type="submit" className="bg-gold-500 text-white font-semibold py-2 rounded-lg hover:bg-gold-600 transition">Login</button>
+            <p className="text-center">Don't have an account? <a href="#" className="text-gold-700 hover:underline" onClick={() => setView('register')}>Register</a></p>
             {loading && <div className="flex justify-center"><div className="loader"></div></div>}
             {message && <div className="text-red-600 font-medium text-center">{message}</div>}
           </form>
         )}
         {view === 'register' && (
           <form onSubmit={handleRegister} className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold text-gold-dark mb-2 text-center">Register</h2>
-            <input name="userid" placeholder="User ID" value={form.userid} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-dark" />
-            <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-dark" />
-            <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-dark" />
-            <select name="region" value={form.region} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-dark">
+            <h2 className="text-2xl font-bold text-gold-700 mb-2 text-center">Register</h2>
+            <input name="userid" placeholder="User ID" value={form.userid} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-400" />
+            <input name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-400" />
+            <input name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-400" />
+            <select name="region" value={form.region} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-400">
               <option value="">Select Region</option>
               <option value="India">India</option>
               <option value="USA">USA</option>
               <option value="UK">UK</option>
               <option value="Other">Other</option>
             </select>
-            <button type="submit" className="bg-gold-dark text-white font-semibold py-2 rounded-lg hover:bg-gold transition">Register</button>
-            <p className="text-center">Already have an account? <a href="#" className="text-gold-dark hover:underline" onClick={() => setView('login')}>Login</a></p>
+            <button type="submit" className="bg-gold-500 text-white font-semibold py-2 rounded-lg hover:bg-gold-600 transition">Register</button>
+            <p className="text-center">Already have an account? <a href="#" className="text-gold-700 hover:underline" onClick={() => setView('login')}>Login</a></p>
             {loading && <div className="flex justify-center"><div className="loader"></div></div>}
             {message && <div className="text-red-600 font-medium text-center">{message}</div>}
           </form>
         )}
         {view === 'verify' && (
           <form onSubmit={handleVerify} className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold text-gold-dark mb-2 text-center">Verify OTP</h2>
-            <input name="otp" placeholder="Enter OTP" value={form.otp} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-dark" />
-            <button type="submit" className="bg-gold-dark text-white font-semibold py-2 rounded-lg hover:bg-gold transition">Verify</button>
+            <h2 className="text-2xl font-bold text-gold-700 mb-2 text-center">Verify OTP</h2>
+            <input name="otp" placeholder="Enter OTP" value={form.otp} onChange={handleChange} required className="px-4 py-2 rounded-lg border border-gray-200 focus:border-gold-400" />
+            <button type="submit" className="bg-gold-500 text-white font-semibold py-2 rounded-lg hover:bg-gold-600 transition">Verify</button>
             {loading && <div className="flex justify-center"><div className="loader"></div></div>}
             {message && <div className="text-red-600 font-medium text-center">{message}</div>}
           </form>
