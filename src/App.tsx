@@ -6,11 +6,10 @@ import './App.css';
 function Navbar({ token, onLogout }: { token: string | null, onLogout: () => void }) {
   return (
     <nav className="w-full bg-white shadow flex items-center justify-between px-6 py-3 fixed top-0 left-0 z-20">
-      <span className="text-2xl font-bold text-gold-dark tracking-wide">Gold Tracker</span>
+      <span className="hidden md:block text-2xl font-bold text-gold-dark tracking-wide">Gold Tracker</span>
       <div className="flex gap-4 items-center">
         {token ? (
           <>
-            <a className="text-lg font-medium text-gray-700 hover:text-gold-dark transition" href="#dashboard">Dashboard</a>
             <button className="bg-gold-dark text-white px-4 py-2 rounded-lg font-semibold hover:bg-gold transition" onClick={onLogout}>Logout</button>
           </>
         ) : null}

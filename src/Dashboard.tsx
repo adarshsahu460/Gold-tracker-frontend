@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SectionHeader } from './components/SectionHeader';
 
 interface Asset {
   id: number;
@@ -49,6 +50,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
   const [toast, setToast] = useState<string | null>(null);
   const [section, setSection] = useState<Section>('dashboard');
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showTitles, setShowTitles] = useState(false);
 
   const fetchAssets = async () => {
     setLoading(true);
@@ -235,9 +237,8 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
           >
             {section === 'dashboard' && (
               <div className="space-y-8">
-                {/* Add Asset Card */}
+                {/* Add Asset Form */}
                 <section className="card p-4 sm:p-6">
-                  <h2 className="text-xl font-semibold text-dark-900 mb-6">Add Gold Asset</h2>
                   <form onSubmit={handleAdd} className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div className="md:col-span-2">
                       <select
@@ -301,10 +302,13 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
                   )}
                 </section>
 
-                {/* Assets Table - Mobile Optimized */}
+                {/* Assets Table */}
                 <section className="card overflow-hidden">
                   <div className="p-4 sm:p-6 border-b border-dark-100 flex justify-between items-center">
-                    <h2 className="text-xl font-semibold text-dark-900">Your Gold Assets</h2>
+                    <SectionHeader 
+                      title="Your Gold Assets"
+                      showTitle={showTitles} 
+                    />
                     {loading && <div className="loader" />}
                   </div>
 
@@ -409,9 +413,11 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
 
             {section === 'prices' && (
               <section className="card p-4 sm:p-8">
-                <h2 className="text-xl font-semibold text-dark-900 mb-6 sm:mb-8 text-center">
-                  Current Gold Prices
-                </h2>
+                <SectionHeader 
+                  title="Current Gold Prices"
+                  className="mb-6 text-center"
+                  showTitle={showTitles}
+                />
                 {dashboard ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {[
@@ -438,14 +444,17 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
 
             {section === 'profit' && (
               <section className="card p-4 sm:p-8 text-center">
-                <h2 className="text-xl font-semibold text-dark-900 mb-6 sm:mb-8">Current Profit</h2>
+                <SectionHeader 
+                  title="Net Profit"
+                  className="mb-6"
+                  showTitle={showTitles}
+                />
                 {dashboard ? (
                   <motion.div
                     className="inline-block card bg-gradient-to-br from-gold-50 to-white p-6 sm:p-8"
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                   >
-                    <h3 className="text-lg text-dark-600 mb-2">Net Profit</h3>
                     <p className={`text-3xl sm:text-4xl font-bold ${
                       dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
                     }`}>
@@ -462,7 +471,11 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
 
             {section === 'graph' && (
               <section className="card p-8 text-center">
-                <h2 className="text-xl font-semibold text-dark-900 mb-8">Gold Price & Profit Graph</h2>
+                <SectionHeader 
+                  title="Gold Price & Profit Graph"
+                  className="mb-8"
+                  showTitle={showTitles}
+                />
                 <div className="card bg-gradient-to-br from-gold-50 to-white p-12">
                   <p className="text-dark-400">(Interactive graph coming soon...)</p>
                 </div>
