@@ -22,7 +22,7 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
     e.preventDefault();
     setMessage('');
     setLoading(true);
-    const res = await fetch('https://gold-tracker-backend-2v7c.onrender.com/api/auth/register', {
+    const res = await fetch('http://13.201.185.122:5000/api/auth/register', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userid: form.userid, password: form.password, email: form.email, region: form.region }),
@@ -40,7 +40,7 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
     e.preventDefault();
     setMessage('');
     setLoading(true);
-    const res = await fetch('https://gold-tracker-backend-2v7c.onrender.com/api/auth/verify-otp', {
+    const res = await fetch('http://13.201.185.122:5000/api/auth/verify-otp', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userid: useridForOtp, otp: form.otp }),
@@ -57,7 +57,7 @@ export default function Auth({ onAuthSuccess }: AuthProps) {
     e.preventDefault();
     setMessage('');
     setLoading(true);
-    const res = await fetch('https://gold-tracker-backend-2v7c.onrender.com/api/auth/login', {
+    const res = await fetch('http://13.201.185.122:5000/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userid: form.userid, password: form.password }),
