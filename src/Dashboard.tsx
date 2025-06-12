@@ -54,7 +54,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
 
   const fetchAssets = async () => {
     setLoading(true);
-    const res = await fetch('http://13.201.185.122:5000/api/gold/list', {
+    const res = await fetch('https://api.gold-tracker.adarshsahu.site/api/gold/list', {
       headers: { Authorization: `Bearer ${token}` },
     });
     setAssets(await res.json());
@@ -62,7 +62,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
   };
   const fetchDashboard = async () => {
     setLoading(true);
-    const res = await fetch('http://13.201.185.122:5000/api/dashboard', {
+    const res = await fetch('https://api.gold-tracker.adarshsahu.site/api/dashboard', {
       headers: { Authorization: `Bearer ${token}` },
     });
     setDashboard(await res.json());
@@ -82,7 +82,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
     e.preventDefault();
     setMsg('');
     setLoading(true);
-    const res = await fetch('http://13.201.185.122:5000/api/gold/add', {
+    const res = await fetch('https://api.gold-tracker.adarshsahu.site/api/gold/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       body: JSON.stringify({
@@ -112,7 +112,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
   const confirmRemove = async () => {
     if (removeId == null) return;
     setLoading(true);
-    await fetch(`http://13.201.185.122:5000/api/gold/remove/${removeId}`, {
+    await fetch(`https://api.gold-tracker.adarshsahu.site/api/gold/remove/${removeId}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     });
