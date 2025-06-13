@@ -53,6 +53,16 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showTitles] = useState(false);
 
+  // --- Gold Price History ---
+  interface GoldPriceHistoryItem {
+    id: number;
+    date: string;
+    price_per_gram: { _24k: number; _22k: number; _18k: number };
+  }
+
+  const [history, setHistory] = useState<GoldPriceHistoryItem[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+
   // Helper to handle 401
   const handle401 = () => {
     localStorage.removeItem('token');
@@ -77,11 +87,27 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
     setDashboard(await res.json());
     setLoading(false);
   };
+  const fetchGoldHistory = async () => {
+    setHistoryLoading(true);
+    try {
+      const res = await fetch('https://api.gold-tracker.adarshsahu.site/api/gold/history?days=30');
+      if (res.ok) {
+        const data = await res.json();
+        setHistory(data);
+      }
+    } finally {
+      setHistoryLoading(false);
+    }
+  };
   useEffect(() => {
     fetchAssets();
     fetchDashboard();
     // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    if (section === 'prices') fetchGoldHistory();
+    // eslint-disable-next-line
+  }, [section]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -450,6 +476,38 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
                     <div className="loader" />
                   </div>
                 )}
+
+                <div className="mt-8">
+                  <SectionHeader title="Gold Price History (Max per Day)" className="mb-4 text-center" showTitle={showTitles} />
+                  {historyLoading ? (
+                    <div className="flex justify-center py-8"><div className="loader" /></div>
+                  ) : history.length === 0 ? (
+                    <div className="text-center text-dark-400">No historical data available.</div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr>
+                            <th className="px-2 py-2">Date</th>
+                            <th className="px-2 py-2">24K (₹/g)</th>
+                            <th className="px-2 py-2">22K (₹/g)</th>
+                            <th className="px-2 py-2">18K (₹/g)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {history.map(item => (
+                            <tr key={item.id}>
+                              <td className="px-2 py-2">{item.date.split('T')[0]}</td>
+                              <td className="px-2 py-2">{item.price_per_gram?._24k?.toLocaleString() ?? '-'}</td>
+                              <td className="px-2 py-2">{item.price_per_gram?._22k?.toLocaleString() ?? '-'}</td>
+                              <td className="px-2 py-2">{item.price_per_gram?._18k?.toLocaleString() ?? '-'}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
               </section>
             )}
 
