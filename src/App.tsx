@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Auth from './Auth';
 import Dashboard from './Dashboard';
 import './App.css';
@@ -20,13 +20,23 @@ function Navbar({ token, onLogout }: { token: string | null, onLogout: () => voi
 
 function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+  const [invalidToken, setInvalidToken] = useState(false);
+
+  // Listen for invalid token event from Dashboard
+  const handleInvalidToken = () => {
+    setToken(null);
+    setInvalidToken(true);
+    localStorage.removeItem('token');
+  };
 
   const handleAuthSuccess = (tok: string) => {
     setToken(tok);
+    setInvalidToken(false);
     localStorage.setItem('token', tok);
   };
   const handleLogout = () => {
     setToken(null);
+    setInvalidToken(false);
     localStorage.removeItem('token');
   };
 
@@ -34,10 +44,10 @@ function App() {
     <div className="min-h-screen w-full bg-gray-50 flex flex-col">
       <Navbar token={token} onLogout={handleLogout} />
       <main className="flex-1 flex flex-col pt-20 pb-8 px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 w-full">
-        {!token ? (
+        {!token || invalidToken ? (
           <Auth onAuthSuccess={handleAuthSuccess} />
         ) : (
-          <Dashboard token={token} onLogout={handleLogout} />
+          <Dashboard token={token} onLogout={handleLogout} onInvalidToken={handleInvalidToken} />
         )}
       </main>
     </div>

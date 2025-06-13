@@ -22,6 +22,7 @@ interface DashboardData {
 interface DashboardProps {
   token: string;
   onLogout: () => void;
+  onInvalidToken?: () => void;
 }
 
 const NAV_ITEMS = [
@@ -39,7 +40,7 @@ const fadeIn = {
   exit: { opacity: 0, y: -20 }
 };
 
-export default function Dashboard({ token, onLogout }: DashboardProps) {
+export default function Dashboard({ token, onLogout, onInvalidToken }: DashboardProps) {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [form, setForm] = useState({ type: '', weight: '', purchase_price: '', purchase_date: '' });
@@ -52,11 +53,18 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showTitles] = useState(false);
 
+  // Helper to handle 401
+  const handle401 = () => {
+    localStorage.removeItem('token');
+    if (onInvalidToken) onInvalidToken();
+  };
+
   const fetchAssets = async () => {
     setLoading(true);
     const res = await fetch('https://api.gold-tracker.adarshsahu.site/api/gold/list', {
       headers: { Authorization: `Bearer ${token}` },
     });
+    if (res.status === 401) return handle401();
     setAssets(await res.json());
     setLoading(false);
   };
@@ -65,6 +73,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
     const res = await fetch('https://api.gold-tracker.adarshsahu.site/api/dashboard', {
       headers: { Authorization: `Bearer ${token}` },
     });
+    if (res.status === 401) return handle401();
     setDashboard(await res.json());
     setLoading(false);
   };
@@ -92,6 +101,7 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
         purchase_date: form.purchase_date
       }),
     });
+    if (res.status === 401) return handle401();
     const data = await res.json();
     setLoading(false);
     if (res.ok) {
@@ -112,10 +122,11 @@ export default function Dashboard({ token, onLogout }: DashboardProps) {
   const confirmRemove = async () => {
     if (removeId == null) return;
     setLoading(true);
-    await fetch(`https://api.gold-tracker.adarshsahu.site/api/gold/remove/${removeId}`, {
+    const res = await fetch(`https://api.gold-tracker.adarshsahu.site/api/gold/remove/${removeId}`, {
       method: 'DELETE',
       headers: { Authorization: `Bearer ${token}` },
     });
+    if (res.status === 401) return handle401();
     setShowModal(false);
     setRemoveId(null);
     fetchAssets();
