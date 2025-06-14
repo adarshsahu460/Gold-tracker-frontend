@@ -8,6 +8,7 @@ interface Asset {
   weight: number;
   purchase_price: number;
   purchase_date: string;
+  karat: string; // '24K' | '22K' | '18K'
 }
 
 interface DashboardData {
@@ -43,7 +44,7 @@ const fadeIn = {
 export default function Dashboard({ token, onLogout, onInvalidToken }: DashboardProps) {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
-  const [form, setForm] = useState({ type: '', weight: '', purchase_price: '', purchase_date: '' });
+  const [form, setForm] = useState({ type: '', weight: '', purchase_price: '', purchase_date: '', karat: '24K' });
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -124,14 +125,15 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
         ...form,
         weight: parseFloat(form.weight),
         total_price: parseFloat(form.purchase_price),
-        purchase_date: form.purchase_date
+        purchase_date: form.purchase_date,
+        karat: form.karat
       }),
     });
     if (res.status === 401) return handle401();
     const data = await res.json();
     setLoading(false);
     if (res.ok) {
-      setForm({ type: '', weight: '', purchase_price: '', purchase_date: '' });
+      setForm({ type: '', weight: '', purchase_price: '', purchase_date: '', karat: '24K' });
       fetchAssets();
       fetchDashboard();
       setToast('Gold asset added!');
@@ -319,6 +321,17 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
                       required
                       className="input-field md:col-span-2"
                     />
+                    <select
+                      name="karat"
+                      value={form.karat}
+                      onChange={handleChange}
+                      required
+                      className="input-field"
+                    >
+                      <option value="24K">24K</option>
+                      <option value="22K">22K</option>
+                      <option value="18K">18K</option>
+                    </select>
                     <motion.button
                       type="submit"
                       className="btn btn-primary md:col-span-2"
