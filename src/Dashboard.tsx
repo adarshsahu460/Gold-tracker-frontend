@@ -532,42 +532,24 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
                   showTitle={showTitles}
                 />
                 {dashboard ? (
-                  <motion.div
-                    className="inline-block card bg-gradient-to-br from-gold-50 to-white p-6 sm:p-8"
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                  >
-                    <p className={`text-3xl sm:text-4xl font-bold ${
-                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      Profit :
-                    </p>
-                    <p className={`text-3xl sm:text-4xl font-bold ${
-                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      ₹{dashboard.net ? dashboard.net.toLocaleString() : '-'}
-                    </p>
-                    <p className={`text-3xl sm:text-4xl font-bold ${
-                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      Invested :
-                    </p>
-                    <p className={`text-3xl sm:text-4xl font-bold ${
-                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      ₹{dashboard.net ? dashboard.invested.toLocaleString() : '-'}
-                    </p>
-                    <p className={`text-3xl sm:text-4xl font-bold ${
-                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      Current :
-                    </p>
-                    <p className={`text-3xl sm:text-4xl font-bold ${
-                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
-                    }`}>
-                      ₹{dashboard.net ? dashboard.current.toLocaleString() : '-'}
-                    </p>
-                  </motion.div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+                    <div className="card bg-gradient-to-br from-gold-50 to-white p-6">
+                      <h3 className="text-lg text-dark-600 mb-2">Invested</h3>
+                      <p className="text-3xl sm:text-4xl font-bold text-blue-600">
+                        ₹{dashboard.invested ? dashboard.invested.toLocaleString() : '-'}
+                      </p>
+                    </div>
+                    <div className="card bg-gradient-to-br from-gold-50 to-white p-6">
+                      <h3 className="text-lg text-dark-600 mb-2">Current Value</h3>
+                      <p className="text-3xl sm:text-4xl font-bold text-gold-600">
+                        ₹{dashboard.current ? dashboard.current.toLocaleString() : '-'}
+                      </p>
+                    </div>
+                    <div className="card bg-gradient-to-br from-gold-50 to-white p-6">
+                      <h3 className="text-lg text-dark-600 mb-2">Profit</h3>
+                      <p className={`text-3xl sm:text-4xl font-bold ${dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'}`}>₹{dashboard.net ? dashboard.net.toLocaleString() : '-'}</p>
+                    </div>
+                  </div>
                 ) : (
                   <div className="flex justify-center py-8 sm:py-12">
                     <div className="loader" />
