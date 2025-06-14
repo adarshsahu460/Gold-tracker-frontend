@@ -527,7 +527,32 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
                     <p className={`text-3xl sm:text-4xl font-bold ${
                       dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
                     }`}>
+                      Profit :
+                    </p>
+                    <p className={`text-3xl sm:text-4xl font-bold ${
+                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
                       ₹{dashboard.net ? dashboard.net.toLocaleString() : '-'}
+                    </p>
+                    <p className={`text-3xl sm:text-4xl font-bold ${
+                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      Invested :
+                    </p>
+                    <p className={`text-3xl sm:text-4xl font-bold ${
+                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      ₹{dashboard.net ? dashboard.invested.toLocaleString() : '-'}
+                    </p>
+                    <p className={`text-3xl sm:text-4xl font-bold ${
+                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      Current :
+                    </p>
+                    <p className={`text-3xl sm:text-4xl font-bold ${
+                      dashboard.net >= 0 ? 'text-green-500' : 'text-red-500'
+                    }`}>
+                      ₹{dashboard.net ? dashboard.current.toLocaleString() : '-'}
                     </p>
                   </motion.div>
                 ) : (
