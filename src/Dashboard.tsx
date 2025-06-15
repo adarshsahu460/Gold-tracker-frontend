@@ -470,11 +470,12 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
                 />
                 {dashboard ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-                    {[
-                      { label: '24K Gold', value: dashboard.price24K },
+                    {[ 
+                    {label: '24K Gold', value: dashboard.price24K },
                       { label: '22K Gold', value: dashboard.price22K },
                       { label: '18K Gold', value: dashboard.price18K }
-                    ].map(({ label, value }) => (
+                    ]
+                    .map(({ label, value }) => (
                       <div key={label} className="card bg-gradient-to-br from-gold-50 to-white p-4 sm:p-6 text-center">
                         <h3 className="text-lg text-dark-600 mb-2">{label}</h3>
                         <p className="text-2xl sm:text-3xl font-bold text-gold-600">
@@ -489,6 +490,18 @@ export default function Dashboard({ token, onLogout, onInvalidToken }: Dashboard
                     <div className="loader" />
                   </div>
                 )}
+
+                {/* Link to allindiabullion.com for live prices */}
+                <div className="flex justify-center mt-8 mb-4">
+                  <a
+                    href="https://allindiabullion.com/market"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-6 py-3 rounded-lg bg-gold-400 text-dark-900 font-semibold shadow hover:bg-gold-500 transition-colors text-base"
+                  >
+                    View Live Gold Prices on allindiabullion.com
+                  </a>
+                </div>
 
                 <div className="mt-8">
                   <SectionHeader title="Gold Price History (Max per Day)" className="mb-4 text-center" showTitle={showTitles} />
